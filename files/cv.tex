@@ -1,0 +1,341 @@
+\documentclass[10pt,a4paper]{article}
+
+% Geometry: bottom margin enlarged for the GDPR footer
+\usepackage[a4paper,margin=2.5cm,bottom=3cm]{geometry}
+
+% Fonts: lmodern is a sharper sans-serif. We render the whole document in
+% sans-serif to match the markdown bold/italic look on screen.
+\usepackage{lmodern}
+\renewcommand{\familydefault}{\sfdefault}
+
+% Section formatting: subsection (h2 in MD) is Large+bold+uppercase + border,
+% matching main.tex:24. Section (h1 in MD — the name) is huge + centered.
+\usepackage{titlesec}
+\usepackage{xcolor}
+\titleformat{\section}{\centering\Huge\bfseries}{}{0em}{}
+\titlespacing*{\section}{0pt}{0pt}{12pt}
+\titleformat{\subsection}{\Large\bfseries\MakeUppercase}{}{0em}{}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+\setcounter{secnumdepth}{0}
+
+\usepackage{parskip}
+\usepackage{enumitem}
+\setlist[itemize]{topsep=4pt,partopsep=0pt,itemsep=2pt,leftmargin=*}
+
+% Tightlist: pandoc emits \tightlist for compact bullet lists. Provide a no-op
+% definition that matches the default pandoc template.
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% hyperref: PDF metadata from YAML frontmatter (title/author/keywords).
+% pandoc substitutes title-meta/author-meta/subject-meta/keywords automatically.
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+  pdftitle={Paweł Jacek Frąckowiak --- Software Architect / Kubstronaut},
+  pdfauthor={Paweł Jacek Frąckowiak},
+  pdfkeywords={Software
+Architect, Kubernetes, Go, Python, GenAI, Security, Platform
+Engineering},
+}
+
+% GDPR footer block, verbatim from main.tex:30-49.
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\newcommand{\gdprText}{%
+  \scriptsize \color{gray}
+  I agree to the processing of personal data provided in this document for realising the recruitment process pursuant to the Personal Data Protection Act of 10 May 2018 (Journal of Laws 2018, item 1000) and in agreement with Regulation (EU) 2016/679 of the European Parliament and of the Council of 27 April 2016 on the protection of natural persons with regard to the processing of personal data and on the free movement of such data, and repealing Directive 95/46/EC (General Data Protection Regulation).%
+}
+\fancyfoot[C]{\parbox{\textwidth}{\centering\gdprText}}
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyfoot[C]{\parbox{\textwidth}{\centering\gdprText}}%
+}
+
+\begin{document}
+
+\section{Paweł Jacek Frąckowiak}\label{paweux142-jacek-frux105ckowiak}
+
+Software Architect and Kubstronaut, currently leading AI platform work
+at Capgemini.
+
+Wrocław, Poland ·
+\href{mailto:pawelfrackowiak@protonmail.com}{\nolinkurl{pawelfrackowiak@protonmail.com}}
+· \href{https://linkedin.com/in/pawelfrackowiak}{LinkedIn} ·
+\href{https://github.com/pfrack}{GitHub} · \href{files/cv.pdf}{PDF}
+
+\subsection{Professional Summary}\label{professional-summary}
+
+Hands-on Software Architect and Kubstronaut with a strong foundation in
+Quality Assurance and Automation. I combine deep infrastructure
+expertise (Kubernetes, Go, Security) with practical application
+development (Python, GenAI). I focus on moving AI projects from ``proof
+of concept'' to stable, scalable production systems. My goal is to
+engineer reliable platforms where code quality and operational security
+are priorities, not afterthoughts.
+
+\subsection{Experience}\label{experience}
+
+\textbf{Architect (Go, Python, GenAI) / Lead Developer \emph{(Managing
+Solution Architect)}} \emph{Capgemini Polska Sp. z o.o., Wrocław, Mar
+2022 -- Present}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{SmartDesk (Document Intelligence):} Architected the on-premise
+  infrastructure for an AI-driven data extraction platform processing
+  complex documents (leases, resumes, certificates). Designed a
+  hardware-aware pipeline using Docling (FastAPI) that toggles between
+  CPU-bound \textbf{PaddleOCR} and GPU-bound \textbf{dots.mocr} based on
+  hardware availability. Configured the BiFrost LLM gateway to
+  dynamically route standard LLM requests to \textbf{Gemma 4} (served
+  via vLLM) and specialized OCR workloads to the OCR model. Bridged the
+  AI backend with a React/NestJS frontend, ensuring seamless operation
+  across AWS cloud and secure bare-metal environments.
+\item
+  \textbf{Multi-Agent Architecture Consulting (Azure):} Acted as a
+  Consulting Architect advising enterprise clients on the adoption of
+  advanced AI patterns using the Microsoft Agentic Framework. Consulted
+  on the strategic implementation of an ``Agent Mesh'' architecture,
+  demonstrating how a central orchestrator/planner agent can dynamically
+  route tasks to specialized containerized agents via skill
+  registration. Guided the client's integration strategy for leveraging
+  Model Context Protocol (MCP) to autonomously execute complex workflows
+  within \textbf{SAP} and \textbf{ServiceNow (SNow)} environments.
+\item
+  \textbf{GenAI Platform Architecture:} Architected a RAG-as-a-Service
+  platform enabling employees to upload documents and interact
+  conversationally. Designed end-to-end document pipeline using
+  Unstructured AI (chunking), Azure AI Search, SharePoint, S3 buckets,
+  DynamoDB, Lambda, Step Functions, SQS/SNS, EC2 instances, and API
+  Gateway for secure self-service document processing.
+\item
+  \textbf{Kagent Research (DevOps AI):} Conducted in-depth research and
+  proof-of-concept development for Kagent -- an AI agent framework
+  specifically designed for DevOps workflows. Evaluated agentic patterns
+  for automating infrastructure provisioning, CI/CD pipeline
+  optimization, and Kubernetes cluster management using advanced LLM
+  orchestration techniques.
+\item
+  \textbf{High-Performance Backend (Go):} Tech Lead for the
+  \emph{Digital Euro} integration layer. Engineered a secure,
+  low-latency system integrating HSM, caching strategies, DESP
+  Interface, and Kubernetes to handle financial transaction standards.
+\item
+  \textbf{GenAI Strategy \& Consulting:} Acting Architect in the GenAI
+  Expert Center, advising projects on ``Build vs.~Buy'' strategies.
+  Evaluated when to deploy custom private models (vLLM, Ollama) versus
+  leveraging existing internal company assets or cloud APIs, balancing
+  security, cost, and compliance.
+\item
+  \textbf{Enterprise Security Integration:} Contributed to the
+  development of a Go-based Key Management System (KMS) for SAP BTP.
+  Implemented critical gRPC/OAuth2 components to enable secure
+  cryptographic operations in a cloud-native environment.
+\item
+  \textbf{Project Leadership \& Mentoring:} Led dynamic project-based
+  engineering teams across Go/Python streams. Managed recruitment
+  processes and guided the strategic migration from legacy RPA to modern
+  Power Platform architectures.
+\item
+  \textbf{Specialized Domain Applications:} Developed critical tools for
+  clients, including a nuclear waste calculation engine (Python/Pandas)
+  and productivity add-ins (TypeScript/Node.js) for the MS Office
+  ecosystem.
+\end{itemize}
+
+\textbf{Architect (Go, RPA) / Lead Developer \emph{(Senior App.
+Consultant)}} \emph{Capgemini Polska Sp. z o.o., Wrocław, Jan 2020 --
+Mar 2022}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Go Ecosystem Pioneer:} Spearheaded the first commercial Golang
+  initiative in the Wrocław branch. Architected the core development
+  ecosystem from ground zero, delivering critical tooling (OpenAPI
+  transpilers) and a containerized test framework (Resty, Godog),
+  effectively proving Go's viability for enterprise delivery.
+\item
+  \textbf{Intelligent Automation \& DevOps:} Tech Lead for the RPA
+  Center of Excellence. Pioneered the use of \textbf{Jenkins as a Robot
+  Orchestrator} and integrated UiPath with AI systems for a ``Level 1.5
+  Support'' platform, bridging classic RPA with CI/CD practices.
+\item
+  \textbf{Process Intelligence:} Supported business optimization
+  initiatives using Process Mining tools (Celonis, Qlik) to identify
+  automation bottlenecks and validate solution designs (SDD/PDD) with
+  real data.
+\item
+  \textbf{Custom Integration Modules:} Developed advanced UiPath
+  activities in C\# (WPF) to bridge automation gaps, enabling secure SSH
+  connections, advanced text parsing, and high-performance API
+  integrations unavailable in standard libraries.
+\item
+  \textbf{Technical Recruitment \& Mentoring:} Acted as the primary
+  technical recruiter and mentor for a 12-member team, defining coding
+  standards and training the first wave of developers in the new tech
+  stack.
+\end{itemize}
+
+\textbf{Lead Automation Engineer \emph{(Senior Test Consultant)}}
+\emph{Capgemini Polska Sp. z o.o., Wrocław, Jan 2019 -- Jun 2020}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Framework Development (Selenium):} Designed and maintained a
+  custom Java-based Selenium automation framework (JUnit 5),
+  establishing reusable test patterns and stable execution pipelines.
+\item
+  \textbf{Automation Strategy:} Defined and executed the test automation
+  approach across teams, improving test coverage and reliability of
+  regression runs.
+\item
+  \textbf{Performance Engineering:} Conducted performance analysis and
+  load testing to identify system bottlenecks and provide actionable
+  recommendations.
+\end{itemize}
+
+\textbf{Technical Trainer (Python \& Selenium)} \emph{Testuj.pl, Dec
+2018 -- Apr 2019}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Expert Training Lead:} Conducted specialized weekend workshops
+  and corporate training sessions on Test Automation using Python and
+  Selenium WebDriver.
+\item
+  \textbf{Curriculum Development:} Designed practical coding exercises
+  and training materials to upskill professional QA engineers.
+\end{itemize}
+
+\textbf{Lead Automation Engineer (Embedded Web) \emph{(Senior Test
+Engineer)}} \emph{Silicon \& Software Systems Polska Sp. z o.o.,
+Wrocław, Dec 2015 -- Dec 2018}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Scale \& Reliability:} Managed a daily execution pipeline of
+  \textasciitilde4,000 tests, combining high-level GUI validation with
+  low-level embedded verification.
+\item
+  \textbf{Hybrid Framework Architecture:} Architected a dual-layer
+  automation ecosystem: a Java/Selenium framework for web interfaces and
+  Python-based scripting for direct embedded device testing and hardware
+  interaction.
+\item
+  \textbf{Technical Leadership:} Led the comprehensive testing strategy
+  for complex embedded systems, bridging the gap between hardware and
+  software QA.
+\end{itemize}
+
+\textbf{Software Test Engineer} \emph{Fara Polska Sp. z o.o., Warsaw,
+Nov 2013 -- Nov 2015}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{System Validation:} Coordinated end-to-end acceptance testing
+  for public transport ticketing systems, ensuring compliance with
+  critical SLAs and reliability standards.
+\end{itemize}
+
+\textbf{R\&D Specialist / Test Engineer} \emph{Telekomunikacja Polska
+S.A. (Orange Labs), Jun 2009 -- Oct 2013}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Lab Automation \& R\&D:} Automated hardware/software testing
+  workflows for telecommunication systems, reducing cycle time by
+  \textasciitilde30\%. Managed laboratory infrastructure and executed
+  complex test protocols.
+\end{itemize}
+
+\subsection{Education}\label{education}
+
+\textbf{Postgraduate Studies in E-Business} \emph{Warsaw University of
+Technology, Poland, 2010}
+
+\begin{itemize}
+\tightlist
+\item
+  Focus: E-business strategies, internet technologies, and digital
+  commerce models.
+\end{itemize}
+
+\textbf{M.Sc. Eng. in Electronics and Telecommunications} \emph{Poznań
+University of Technology, Poland, 2008}
+
+\begin{itemize}
+\tightlist
+\item
+  Specialization: Information Transport Networks
+\item
+  Thesis: ``P2P in 4G Mobile Networks'' (Radio Communication Dept.).
+  Developed a C++ simulation of the MAC Layer P2P mode for the WINNER
+  system, focusing on network performance analysis.
+\end{itemize}
+
+\subsection{Key Certifications \&
+Awards}\label{key-certifications-awards}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Kubernetes Ecosystem (Kubstronaut):} CKS (10/2025), KCSA
+  (11/2025), CKAD (07/2025), CKA (12/2024), KCNA (08/2025). Awarded the
+  \textbf{Kubstronaut} title for holding all 5 CNCF certifications
+  simultaneously.
+\item
+  \textbf{Cloud \& Architecture:} Google Cloud Professional Cloud
+  Architect (12/2023), Capgemini Certified Architect (02/2022)
+\item
+  \textbf{Other:} UiPath RPA Developer Advanced (11/2019), ISTQB
+  Advanced Level Technical Test Analyst (10/2014), ITIL Foundation
+  (10/2021)
+\end{itemize}
+
+\subsection{Technical Skills}\label{technical-skills}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Core Languages:} Golang, Python, Bash/Shell Scripting
+\item
+  \textbf{Cloud Native \& DevOps:} Kubernetes (Kubstronaut), Docker,
+  Helm, Terraform, Ansible, AWS (Lambda, ECS, DynamoDB), Azure AI,
+  Google Cloud (GCP), CI/CD (Jenkins, GitHub Actions), Linux
+  Administration
+\item
+  \textbf{AI \& LLM Engineering:} LangChain, vLLM, Ollama, Hugging Face,
+  LocalAI, RAG Architectures, Vector Databases, BiFrost, Docling,
+  PaddleOCR, dots.mocr, Microsoft Agentic Framework, MCP
+\item
+  \textbf{Backend \& Integration:} FastAPI, gRPC, REST API Design,
+  OpenAPI/Swagger, AsyncAPI, OAuth2, HSM Integration, NestJS, React
+\item
+  \textbf{Automation \& Quality:} Pytest, Go Testify, Godog, Performance
+  Testing, Integration Testing
+\item
+  \textbf{Leadership:} Technical Team Leadership, Solution Architecture,
+  Mentoring, Agile/Scrum, Recruitment
+\item
+  \textbf{Prior Engineering Focus:} C++, Java, C\#, Selenium WebDriver,
+  UiPath (RPA), Process Mining (Celonis)
+\end{itemize}
+
+\subsection{Languages}\label{languages}
+
+\textbf{Polish}: Native \textbar{} \textbf{English}: Advanced (C1/C2)
+\textbar{} \textbf{German}: Intermediate
+
+Last updated: 2026-06
+
+\end{document}
