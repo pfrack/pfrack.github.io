@@ -1,0 +1,53 @@
+name: Scheduled cleanup
+
+on:
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  deployments: write
+  contents: read
+
+jobs:
+  delete-old-runs:
+    name: Delete old workflow runs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Purge old workflow runs
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          retain_days: 0
+          keep_minimum_runs: 1
+          delete_run_by_conclusion_pattern: failure,cancelled
+
+  delete-old-deployments:
+    name: Delete old Pages deployments
+    runs-on: ubuntu-latest
+    steps:
+      - name: Purge old deployments (keep latest 10)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          KEEP=1
+          ids=$(gh api "repos/${GH_REPO}/deployments?per_page=100" --jq '.[].id')
+          count=$(printf '%s\n' "$ids" | grep -c . || true)
+          if [ "${count:-0}" -le "$KEEP" ]; then
+            echo "Only $count deployments; nothing to delete."
+            exit 0
+          fi
+          to_delete=$(printf '%s\n' "$ids" | head -n -"$KEEP")
+          while IFS= read -r id; do
+            [ -z "$id" ] && continue
+            echo "Deleting deployment $id"
+            # Remove statuses first — the delete API 409s otherwise.
+            for sid in $(gh api "repos/${GH_REPO}/deployments/${id}/statuses?per_page=100" --jq '.[].id'); do
+              gh api -X DELETE "repos/${GH_REPO}/deployments/${id}/statuses/${sid}" >/dev/null 2>&1 || true
+            done
+            gh api -X DELETE "repos/${GH_REPO}/deployments/${id}" >/dev/null 2>&1 || true
+          done <<< "$to_delete"
