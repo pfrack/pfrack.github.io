@@ -1193,26 +1193,12 @@ main.content {
       bodyEl.appendChild(currentGroup);
     }
 
-    // ── Scroll reveal via IntersectionObserver ──
-    var revealObserver = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.job-card, .hero-title, .hero-contact, .section-header').forEach(function(el) {
-      revealObserver.observe(el);
-    });
-
     // ── Skills badge cloud styling ──
     var skillsH2 = document.getElementById('skills');
     if (skillsH2) {
-      var next = skillsH2.nextElementSibling;
-      if (next && next.tagName === 'UL') {
-        next.classList.add('skills-cloud');
+      var nextUL = skillsH2.nextElementSibling;
+      if (nextUL && nextUL.tagName === 'UL') {
+        nextUL.classList.add('skills-cloud');
       }
     }
 
@@ -1224,6 +1210,20 @@ main.content {
         nextP.classList.add('hero-summary');
       }
     }
+
+    // ── Scroll reveal via IntersectionObserver ──
+    var revealObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.job-card, .hero-title, .hero-contact, .hero-summary, .section-header').forEach(function(el) {
+      revealObserver.observe(el);
+    });
   });
   </script>
 
