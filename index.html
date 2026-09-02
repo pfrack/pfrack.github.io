@@ -21,16 +21,6 @@
       var e=String.fromCharCode.apply(null,c);
       var s=document.getElementById('contact-email');
       if(s){s.innerHTML='<a href="mailto:'+e+'">'+e+'</a>';}
-      // Theme toggle — prefers system default, persisted override via localStorage.
-      var t=document.getElementById('theme-toggle');
-      if(t){
-        var l=t.querySelector('.theme-label');
-        var root=document.documentElement;
-        var set=function(m){root.setAttribute('data-theme',m);root.setAttribute('data-theme-active',m==='dark'?'true':'false');l.textContent=m==='dark'?'Light':'Dim';t.setAttribute('aria-pressed',m==='dark');}
-        var init=function(){var p=localStorage.getItem('theme');if(!p){set(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');return;}set(p);};
-        init();
-        t.addEventListener('click',function(){var m=root.getAttribute('data-theme')==='dark'?'light':'dark';set(m);localStorage.setItem('theme',m);});
-      }
     });
     </script>
    <meta property="og:type" content="profile">
@@ -49,98 +39,97 @@
    <style>
 /* Hand-written CV styles.
    Two themes (dark default, light via prefers-color-scheme + manual toggle).
-   Premium typography (Geist), elevated content surface, subtle grain,
-   refined section markers, badge-style skill/cert rows. */
+   Premium typography (Geist), elevated sheet with double-bezel enclosure,
+   refined section labels, rounded-full skill/cert pills, kinetic hover. */
+
+/* ── Custom properties: motion ─────────────────────────── */
+:root {
+  /* Spring-like cubic-bezier — used everywhere a transition lives. */
+  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 220ms;
+  --dur-med: 420ms;
+  --dur-slow: 720ms;
+}
 
 /* ── Palette & theme tokens ────────────────────────────── */
 :root {
-  --color-bg: #090c10;
-  --color-bg-alt: #0d1117;
-  --color-surface: #0d1117;
-  --color-text: #e6edf3;
-  --color-text-dim: #9198a1;
-  --color-text-dimmer: #6e7781;
-  --color-accent: #58a6ff;
-  --color-accent-soft: rgba(88, 166, 255, 0.12);
-  --color-accent-border: rgba(88, 166, 255, 0.3);
-  --color-border: #21262d;
-  --color-border-strong: #30363d;
-  --color-bullet: #58a6ff;
+  --color-bg: #0a0b0e;
+  --color-bg-2: #0d0f13;
+  --color-surface: #101218;
+  --color-surface-2: #0d0f13;
+  --color-text: #ececef;
+  --color-text-dim: #9ca0a8;
+  --color-text-dimmer: #6c7079;
+  --color-accent: #79b8ff;
+  --color-accent-2: #a5cdff;
+  --color-accent-soft: rgba(121, 184, 255, 0.12);
+  --color-accent-soft-2: rgba(121, 184, 255, 0.06);
+  --color-accent-border: rgba(121, 184, 255, 0.28);
+  --color-accent-border-faint: rgba(121, 184, 255, 0.14);
+  --color-border: #1e2128;
+  --color-border-soft: rgba(255, 255, 255, 0.05);
+  --color-border-strong: #2a2e36;
+  --color-bullet: #79b8ff;
+  --color-bullet-glow: rgba(121, 184, 255, 0.35);
   --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI',
                Roboto, 'Helvetica Neue', sans-serif;
   --font-mono: ui-monaco, 'SFMono-Regular', 'Menlo', 'Monaco',
                'Courier New', monospace;
-  --max-width: 720px;
-  --radius: 7px;
-  --radius-sm: 5px;
-  --shadow-surface: 0 3px 12px rgba(9, 13, 20, 0.45),
-                    0 1px 3px rgba(9, 13, 20, 0.25);
+  --max-width: 760px;
+  --radius-sheet: 28px;
+  --radius-pill: 999px;
+  --radius-sm: 6px;
+  --shadow-sheet:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 0 0 1px rgba(255, 255, 255, 0.02),
+    0 30px 80px -24px rgba(0, 0, 0, 0.55),
+    0 10px 32px -10px rgba(0, 0, 0, 0.35);
+  --shadow-pill-hover:
+    0 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 6px 18px -6px rgba(121, 184, 255, 0.35);
 }
 
 /* System light theme — applies only when no explicit override is set. */
 @media (prefers-color-scheme: light) {
   :root {
-    --color-bg: #ffffff;
-    --color-bg-alt: #f6f8fa;
+    --color-bg: #fafaf7;
+    --color-bg-2: #f3f2ed;
     --color-surface: #ffffff;
-    --color-text: #1f2328;
-    --color-text-dim: #57606a;
-    --color-text-dimmer: #768090;
-    --color-border: #d0d7de;
-    --color-border-strong: #b6c8db;
-    --color-accent: #0969da;
-    --color-accent-soft: rgba(9, 105, 218, 0.11);
-    --color-accent-border: rgba(9, 105, 218, 0.35);
-    --color-bullet: #0969da;
-    --shadow-surface: 0 3px 12px rgba(17, 19, 24, 0.08),
-                      0 1px 3px rgba(17, 19, 24, 0.05);
+    --color-surface-2: #f7f6f1;
+    --color-text: #15171a;
+    --color-text-dim: #5b6068;
+    --color-text-dimmer: #8a8e95;
+    --color-accent: #0b66d4;
+    --color-accent-2: #0a5cc0;
+    --color-accent-soft: rgba(11, 102, 212, 0.09);
+    --color-accent-soft-2: rgba(11, 102, 212, 0.04);
+    --color-accent-border: rgba(11, 102, 212, 0.22);
+    --color-accent-border-faint: rgba(11, 102, 212, 0.10);
+    --color-border: #e4e6ea;
+    --color-border-soft: rgba(11, 17, 32, 0.04);
+    --color-border-strong: #c8ccd3;
+    --color-bullet: #0b66d4;
+    --color-bullet-glow: rgba(11, 102, 212, 0.22);
+    --shadow-sheet:
+      0 1px 0 rgba(255, 255, 255, 0.6) inset,
+      0 0 0 1px rgba(11, 17, 32, 0.02),
+      0 30px 80px -24px rgba(15, 20, 40, 0.10),
+      0 10px 32px -10px rgba(15, 20, 40, 0.06);
+    --shadow-pill-hover:
+      0 1px 0 rgba(255, 255, 255, 0.8) inset,
+      0 6px 18px -6px rgba(11, 102, 212, 0.25);
   }
 }
 
-/* Explicit overrides — higher specificity than the media query above. */
-:root[data-theme="dark"] {
-  --color-bg: #090c10;
-  --color-bg-alt: #0d1117;
-  --color-surface: #0d1117;
-  --color-text: #e6edf3;
-  --color-text-dim: #9198a1;
-  --color-text-dimmer: #6e7781;
-  --color-accent: #58a6ff;
-  --color-accent-soft: rgba(88, 166, 255, 0.12);
-  --color-accent-border: rgba(88, 166, 255, 0.3);
-  --color-border: #21262d;
-  --color-border-strong: #30363d;
-  --color-bullet: #58a6ff;
-  --shadow-surface: 0 3px 12px rgba(9, 13, 20, 0.45),
-                    0 1px 3px rgba(9, 13, 20, 0.25);
-}
-
-:root[data-theme="light"] {
-  --color-bg: #ffffff;
-  --color-bg-alt: #f6f8fa;
-  --color-surface: #ffffff;
-  --color-text: #1f2328;
-  --color-text-dim: #57606a;
-  --color-text-dimmer: #768090;
-  --color-border: #d0d7de;
-  --color-border-strong: #b6c8db;
-  --color-accent: #0969da;
-  --color-accent-soft: rgba(9, 105, 218, 0.11);
-  --color-accent-border: rgba(9, 105, 218, 0.35);
-  --color-bullet: #0969da;
-  --shadow-surface: 0 3px 12px rgba(17, 19, 24, 0.08),
-                    0 1px 3px rgba(17, 19, 24, 0.05);
-}
+/* Explicit overrides — removed; theme now follows prefers-color-scheme via
+   the media query above. The dark block above is the implicit default. */
 
 /* ── Base ──────────────────────────────────────────────── */
 html {
   scroll-behavior: smooth;
   font-size: 100%;
   text-size-adjust: 100%;
-}
-
-:root {
-  font-size: 100%;
 }
 
 ::selection {
@@ -156,10 +145,14 @@ body {
   font-weight: 400;
   line-height: 1.7;
   color: var(--color-text);
-  background: var(--color-bg);
+  background:
+    radial-gradient(1200px 600px at 50% -100px, var(--color-accent-soft-2), transparent 60%),
+    var(--color-bg);
+  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-variant-numeric: tabular-nums;
+  min-height: 100dvh;
 }
 
 /* Subtle fixed grain — breaks digital flatness without competing with text. */
@@ -187,7 +180,7 @@ body::before {
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.02em;
-  transition: transform 0.2s ease;
+  transition: transform var(--dur-fast) var(--ease-spring);
 }
 
 .skip-link:focus {
@@ -195,48 +188,13 @@ body::before {
   transform: translateY(-1px);
 }
 
-/* ── Theme toggle (no sun/moon cliché — text label, system-default aware) */
-#theme-toggle {
-  position: fixed;
-  top: 1.25rem;
-  right: 1.25rem;
-  z-index: 100;
-  padding: 0.35rem 0.7rem;
-  border: 1px solid var(--color-accent-border);
-  border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--color-text-dim);
-  font-family: var(--font-sans);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.03em;
-  cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease,
-              transform 0.2s cubic-bezier(0.25, 1, 0.25, 1);
-}
-
-#theme-toggle:hover {
-  background: var(--color-accent-soft);
-  color: var(--color-accent);
-  border-color: var(--color-accent);
-  transform: translateY(-1px);
-}
-
-#theme-toggle:active {
-  transform: scale(0.97);
-}
-
-#theme-toggle:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
+/* ── Theme toggle — removed; theme follows prefers-color-scheme ── */
 
 /* ── Focus rings ───────────────────────────────────────── */
 :focus-visible {
   outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-  border-radius: 2px;
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
 /* ── Links ─────────────────────────────────────────────── */
@@ -245,15 +203,15 @@ a {
   text-decoration: none;
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
-  transition: color 0.25s ease, text-decoration-thickness 0.25s ease;
+  transition: color var(--dur-fast) var(--ease-spring),
+              text-decoration-thickness var(--dur-fast) var(--ease-spring);
   font-weight: 500;
 }
 
 a:hover {
-  color: var(--color-accent);
+  color: var(--color-accent-2);
   text-decoration: underline;
   text-decoration-thickness: 1px;
-  filter: brightness(1.1);
 }
 
 a:visited {
@@ -261,73 +219,167 @@ a:visited {
 }
 
 a:active {
-  filter: brightness(0.9);
+  color: var(--color-accent-2);
 }
 
-.content > h1 + p a {
-  font-weight: 500;
-}
-
-/* ── Content sheet ─────────────────────────────────────── */
+/* ── Content sheet — double-bezel enclosure ────────────── */
 main.content {
+  position: relative;
   max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 4.25rem 1.5rem 5.5rem;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-surface);
+  margin: clamp(1.5rem, 4vw, 3rem) auto;
+  padding: clamp(2.5rem, 5vw, 4rem) clamp(1.25rem, 4vw, 3rem) clamp(3rem, 6vw, 5rem);
+  background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-surface-2) 100%);
+  border-radius: var(--radius-sheet);
+  box-shadow: var(--shadow-sheet);
+  /* Outer hairline — sits outside the rounded corners. */
+  outline: 1px solid var(--color-border-soft);
+  outline-offset: -1px;
+}
+
+/* Inner core hairline — the nested enclosure (Doppelrand).
+   Sits 6px inside the outer edge, with a fainter border and a smaller radius. */
+main.content::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: calc(var(--radius-sheet) - 6px);
+  border: 1px solid var(--color-border-soft);
+  pointer-events: none;
 }
 
 /* ── Document title ────────────────────────────────────── */
 .content h1 {
-  font-size: clamp(1.9rem, 5vw, 2.75rem);
+  font-size: clamp(2.25rem, 6vw, 3.75rem);
   font-weight: 700;
   color: var(--color-text);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  margin: 0 0 0.3rem;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  margin: 0 0 0.75rem;
   text-wrap: balance;
+  font-feature-settings: "ss01", "cv11";
 }
 
-/* Contact line right after the title */
+/* Contact line right after the title — pill CTAs with kinetic trailing icon. */
 .content > h1 + p {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.5rem;
   font-size: 0.85rem;
   color: var(--color-text-dim);
-  letter-spacing: 0.01em;
-  margin: 0 0 2.5rem;
+  letter-spacing: 0.005em;
+  margin: 0 0 3rem;
   line-height: 1.65;
   text-wrap: pretty;
 }
 
 .content > h1 + p a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem 0.35rem 0.95rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-2);
+  color: var(--color-text);
   font-weight: 500;
+  font-size: 0.8rem;
+  letter-spacing: 0;
+  text-decoration: none;
+  transition:
+    background var(--dur-med) var(--ease-spring),
+    color var(--dur-med) var(--ease-spring),
+    transform var(--dur-fast) var(--ease-spring);
 }
 
-/* ── Section headings ──────────────────────────────────── */
+/* Trailing arrow circle — button-in-button. Sits inside the pill. */
+.content > h1 + p a::after {
+  content: "↗";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  background: var(--color-accent-soft);
+  font-size: 0.7rem;
+  line-height: 1;
+  color: var(--color-accent);
+  font-weight: 600;
+  flex-shrink: 0;
+  transition:
+    transform var(--dur-med) var(--ease-spring),
+    background var(--dur-med) var(--ease-spring);
+}
+
+/* Down-arrow for the PDF download. */
+.content > h1 + p a[href$=".pdf"]::after {
+  content: "↓";
+  font-size: 0.8rem;
+}
+
+.content > h1 + p a:hover {
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.content > h1 + p a:hover::after {
+  transform: translate(1.5px, -1.5px) scale(1.1);
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+.content > h1 + p a:hover[href$=".pdf"]::after {
+  transform: translateY(2px) scale(1.1);
+}
+
+.content > h1 + p a:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* The location text node before the email sits inline with the pills —
+   pandoc emits literal " · " separators which render as small dim dots. */
+
+/* ── Section headings — refined eyebrow + hairline rule ── */
 .content h2 {
-  font-size: 0.75rem;
-  font-weight: 700;
-  font-variant: small-caps;
-  font-variant-numeric: oldstyle-nums;
-  letter-spacing: 0.07em;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
   color: var(--color-text-dim);
-  line-height: 1.4;
-  margin: 3.25rem 0 1.25rem;
+  line-height: 1;
+  margin: 3.5rem 0 1.25rem;
   position: relative;
-  padding-left: 0;
+  padding: 0 0 0.75rem;
   text-wrap: balance;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
 }
 
+/* Tiny accent square — replaces the old left bar. */
 .content h2::before {
   content: "";
-  position: absolute;
-  left: 0;
-  top: 0.05em;
-  width: 3px;
-  height: 1.1em;
-  border-radius: 2px;
+  width: 5px;
+  height: 5px;
+  border-radius: 1px;
   background: var(--color-accent);
+  flex-shrink: 0;
+  transition: transform var(--dur-med) var(--ease-spring);
+}
+
+/* Hairline rule that completes the eyebrow row. */
+.content h2::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-border-soft), transparent);
+  margin-left: 0.25rem;
+}
+
+.content h2:hover::before {
+  transform: scale(1.25);
 }
 
 .content h2:first-of-type {
@@ -340,26 +392,36 @@ main.content {
   font-weight: 600;
   color: var(--color-text);
   line-height: 1.3;
-  margin: 2rem 0 0.3rem;
+  margin: 2rem 0 0.25rem;
   text-wrap: balance;
+  letter-spacing: -0.005em;
 }
 
 .content h3 em {
   font-style: normal;
-  font-weight: 500;
+  font-weight: 450;
   color: var(--color-text-dim);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
+  letter-spacing: 0;
 }
 
-/* Company / date line */
+/* Company / date line — mono-feel metadata strip. */
 .content > p em {
   display: block;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--color-text-dim);
   font-style: normal;
   font-weight: 500;
-  margin-top: 0.1rem;
+  margin-top: 0.15rem;
+  margin-bottom: 0.5rem;
   text-wrap: balance;
+  letter-spacing: 0.01em;
+}
+
+/* The pandoc-rendered company/date `<p><em>...</em></p>` should sit tight
+   under the h3 with no extra paragraph spacing. */
+.content h3 + p {
+  margin: 0 0 0.5rem;
 }
 
 .content p strong {
@@ -382,39 +444,41 @@ main.content {
 
 /* ── Bullet lists ──────────────────────────────────────── */
 .content ul {
-  margin: 0.75rem 0 0.875rem;
+  margin: 0.6rem 0 0.5rem;
   padding-left: 0;
   list-style: none;
 }
 
 .content li {
   position: relative;
-  padding-left: 18px;
-  margin-bottom: 0.45rem;
+  padding-left: 22px;
+  margin-bottom: 0.55rem;
   font-size: 0.875rem;
   color: var(--color-text-dim);
   list-style-type: none;
-  line-height: 1.55;
+  line-height: 1.6;
   text-wrap: pretty;
 }
 
 .content li::before {
   content: "";
   position: absolute;
-  left: 0;
-  top: 0.28rem;
+  left: 4px;
+  top: 0.42rem;
   width: 5px;
   height: 5px;
-  border-radius: var(--radius-sm);
+  border-radius: 1.5px;
   background: var(--color-bullet);
-  box-shadow: 0 2px 4px rgba(88, 166, 255, 0.25);
+  box-shadow: 0 0 0 3px var(--color-accent-soft-2),
+              0 2px 6px var(--color-bullet-glow);
+  transition: transform var(--dur-med) var(--ease-spring),
+              box-shadow var(--dur-med) var(--ease-spring);
 }
 
-/* Tinted bullet for the light theme */
-@media (prefers-color-scheme: light) {
-  .content li::before {
-    box-shadow: 0 2px 4px rgba(9, 105, 218, 0.25);
-  }
+.content li:hover::before {
+  transform: scale(1.25);
+  box-shadow: 0 0 0 4px var(--color-accent-soft),
+              0 2px 8px var(--color-bullet-glow);
 }
 
 .content li strong {
@@ -440,47 +504,112 @@ main.content {
 
 /* ── Last updated ──────────────────────────────────────── */
 .content > p:last-child {
-  font-size: 0.725rem;
+  font-size: 0.72rem;
   color: var(--color-text-dimmer);
-  margin-top: 2.5rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--color-border);
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border-soft);
   text-align: center;
   text-wrap: balance;
+  letter-spacing: 0.04em;
 }
 
-/* Technical Skills render as a horizontal badge cloud. Scoped to the stable
-   pandoc anchor for "## Technical Skills" so certs (also <h2>+<ul>) keep
-   their narrative bullets. */
+/* ── Technical Skills — pill cloud ──────────────────────── */
 #technical-skills + ul {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 0.45rem 0.5rem;
+  margin-top: 1rem;
 }
 
 #technical-skills + ul li {
   display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.2rem 0.6rem;
-  border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--color-accent-border);
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-2);
   font-size: 0.825rem;
+  margin-bottom: 0;
+  transition:
+    background var(--dur-med) var(--ease-spring),
+    transform var(--dur-fast) var(--ease-spring);
 }
 
 #technical-skills + ul li:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+  transform: translateY(-1px);
+}
+
+#technical-skills + ul li::before {
+  display: none;
 }
 
 #technical-skills + ul li strong {
   font-weight: 600;
-  color: var(--color-text);
-  font-size: 0.75rem;
-  letter-spacing: 0.03em;
+  color: var(--color-text-dim);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  font-variant: small-caps;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+#technical-skills + ul li strong::after {
+  content: "·";
+  margin-left: 0.5rem;
+  color: var(--color-text-dimmer);
+}
+
+/* ── Certifications list — same pill cloud, slightly larger ── */
+#key-certifications-awards + ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 1rem;
+}
+
+#key-certifications-awards + ul li {
+  list-style: none;
+  position: relative;
+  padding: 0.8rem 1rem 0.85rem 1.1rem;
+  border-radius: 14px;
+  background: var(--color-bg-2);
+  font-size: 0.875rem;
+  margin-bottom: 0;
+  padding-left: 1.1rem;
+  transition:
+    background var(--dur-med) var(--ease-spring),
+    transform var(--dur-fast) var(--ease-spring);
+}
+
+#key-certifications-awards + ul li::before {
+  display: none;
+}
+
+#key-certifications-awards + ul li strong {
+  font-weight: 600;
+  color: var(--color-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+/* Tiny accent square before each cert category label. */
+#key-certifications-awards + ul li strong::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 1px;
+  background: var(--color-accent);
+  flex-shrink: 0;
+}
+
+#key-certifications-awards + ul li > p {
+  margin: 0.35rem 0 0;
+  font-size: 0.84rem;
+  color: var(--color-text-dim);
+  line-height: 1.55;
 }
 
 /* ── Print styles ───────────────────────────────────────── */
@@ -500,15 +629,18 @@ main.content {
 
   body::before { display: none; }
 
-  #theme-toggle { display: none !important; }
-
   main.content {
     padding: 0 !important;
     max-width: none !important;
     background: transparent !important;
     border: none !important;
-    box-shadow: none !important;
     border-radius: 0 !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+  }
+
+  main.content::before {
+    display: none;
   }
 
   a {
@@ -516,18 +648,47 @@ main.content {
     text-decoration: none;
   }
 
-  .content code {
-    background: #f0f4ff !important;
-    color: #0969da !important;
+  .content h1 {
+    font-size: 26pt;
+    margin-bottom: 0.4rem;
+  }
+
+  .content > h1 + p {
+    margin-bottom: 1.5rem;
+    font-size: 9pt;
+    gap: 0.3rem;
+  }
+
+  .content > h1 + p a {
+    background: transparent !important;
+    padding: 0 !important;
+    color: #111 !important;
+  }
+
+  .content > h1 + p a::after {
+    display: none !important;
   }
 
   .content h2 {
     color: #111 !important;
     break-after: avoid;
+    margin-top: 1.5rem;
+    border-bottom: 1px solid #888 !important;
+    padding-bottom: 0.3rem;
   }
 
   .content h2::before {
     background: #666 !important;
+    box-shadow: none;
+  }
+
+  .content h2::after {
+    display: none;
+  }
+
+  .content code {
+    background: #f0f4ff !important;
+    color: #0969da !important;
   }
 
   .content li,
@@ -539,6 +700,7 @@ main.content {
   .content li::before {
     background: #0969da !important;
     opacity: 0.3;
+    box-shadow: none !important;
     -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
   }
@@ -559,15 +721,32 @@ main.content {
 
   /* Flat bullets & no backgrounds in print */
   .content ul li {
-    display: list-item;
-    padding: 0;
+    padding-left: 14pt !important;
     background: none !important;
     border: none !important;
+    box-shadow: none !important;
   }
 
-  .content ul li strong {
+  #technical-skills + ul,
+  #key-certifications-awards + ul {
+    gap: 0.2rem !important;
+  }
+
+  #technical-skills + ul li,
+  #key-certifications-awards + ul li {
+    background: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  #technical-skills + ul li strong,
+  #key-certifications-awards + ul li strong {
     text-transform: none;
-    font-variant: normal;
+    letter-spacing: 0;
+  }
+
+  #key-certifications-awards + ul li strong::before {
+    display: none;
   }
 }
 
@@ -582,25 +761,33 @@ main.content {
 /* ── Responsive ────────────────────────────────────────── */
 @media (max-width: 768px) {
   main.content {
-    padding: 3rem 1rem 4rem;
-    border-radius: var(--radius);
+    padding: 2.25rem 1.15rem 3rem;
+    margin: 1.25rem auto;
+    border-radius: 22px;
   }
 
   .content h1 {
-    font-size: 1.6rem;
+    font-size: clamp(1.75rem, 9vw, 2.25rem);
   }
 
   .content > h1 + p {
-    font-size: 0.8rem;
-    margin-bottom: 2rem;
+    font-size: 0.78rem;
+    margin-bottom: 2.25rem;
+    gap: 0.4rem;
+  }
+
+  .content > h1 + p a {
+    font-size: 0.76rem;
+    padding: 0.3rem 0.7rem 0.3rem 0.8rem;
+  }
+
+  .content > h1 + p a::after {
+    width: 0.95rem;
+    height: 0.95rem;
   }
 
   .content h2 {
     margin: 2.5rem 0 1rem;
-  }
-
-  .content h2::before {
-    top: 0;
   }
 
   .content h3 {
@@ -608,38 +795,35 @@ main.content {
   }
 
   .content ul li {
-    font-size: 0.825rem;
+    font-size: 0.83rem;
+  }
+
+  #technical-skills + ul li {
+    font-size: 0.78rem;
+    padding: 0.4rem 0.8rem 0.4rem 0.85rem;
   }
 }
 
 @media (max-width: 480px) {
   main.content {
-    padding: 2rem 0.7rem 2.75rem;
+    padding: 1.75rem 0.85rem 2.25rem;
+    border-radius: 18px;
   }
 
   .content h1 {
-    font-size: 1.45rem;
+    font-size: 1.7rem;
   }
 
   .content > h1 + p {
-    font-size: 0.75rem;
+    font-size: 0.74rem;
   }
 
   body {
     font-size: 0.85rem;
   }
-
-  #theme-toggle {
-    top: 0.85rem;
-    right: 0.85rem;
-    font-size: 0.7rem;
-    padding: 0.25rem 0.55rem;
-  }
 }
+
 </style>
-   <script>
-   (function(){var t=localStorage.getItem('theme');if(!t){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);})();
-   </script>
 <!--
   Values in this JSON-LD block come from cv.md frontmatter via 
   substitution. Pandoc HTML-escapes values, so "&" becomes "&amp;" in the
@@ -671,9 +855,6 @@ main.content {
 </head>
   <body>
 <a href="#main-content" class="skip-link">Skip to content</a>
-<button type="button" id="theme-toggle" aria-label="Toggle color scheme" aria-pressed="false">
-  <span class="theme-label">Dim</span>
-</button>
 <main class="content" id="main-content">
 <h1 id="paweł-jacek-frąckowiak">Paweł Jacek Frąckowiak</h1>
 <p>Wrocław, Poland · <span id="contact-email"><noscript><a href="mailto:pawelfrackowiak@protonmail.com">pawelfrackowiak@protonmail.com</a></noscript></span> · <a href="https://linkedin.com/in/pawelfrackowiak">LinkedIn</a> · <a href="https://github.com/pfrack">GitHub</a> · <a href="Pawel_Frackowiak.pdf">PDF</a></p>
