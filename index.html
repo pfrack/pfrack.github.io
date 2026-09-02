@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Paweł Jacek Frąckowiak — Software Architect / Kubstronaut</title>
+  <title>Paweł Jacek Frąckowiak - Software Architect / Kubstronaut</title>
   <meta name="description" content="Hands-on Software Architect and Kubstronaut with deep infrastructure expertise (Kubernetes, Go, Security) and practical application development (Python, GenAI).">
   <meta name="author" content="Paweł Jacek Frąckowiak">
   <meta name="keywords" content="Software Architect, Kubernetes, Go, Python, GenAI, Security, Platform Engineering">
@@ -21,49 +21,72 @@
    });
    </script>
    <meta property="og:type" content="profile">
-  <meta property="og:title" content="Paweł Jacek Frąckowiak — Software Architect / Kubstronaut">
+  <meta property="og:title" content="Paweł Jacek Frąckowiak - Software Architect / Kubstronaut">
   <meta property="og:description" content="Hands-on Software Architect and Kubstronaut with deep infrastructure expertise (Kubernetes, Go, Security) and practical application development (Python, GenAI).">
   <meta property="og:url" content="https://pfrack.github.io/">
   <meta property="og:image" content="https://pfrack.github.io/og-image.svg">
   <!-- en_US is hardcoded: CV is English-only. If a Polish variant is added, gate this behind a lang conditional. -->
    <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary">
-   <meta name="twitter:title" content="Paweł Jacek Frąckowiak — Software Architect / Kubstronaut">
+   <meta name="twitter:title" content="Paweł Jacek Frąckowiak - Software Architect / Kubstronaut">
     <meta name="twitter:description" content="Hands-on Software Architect and Kubstronaut with deep infrastructure expertise (Kubernetes, Go, Security) and practical application development (Python, GenAI).">
     <meta name="twitter:locale" content="en_US">
    <meta name="twitter:image" content="https://pfrack.github.io/og-image.svg">
-   <meta name="twitter:image:alt" content="Paweł Jacek Frąckowiak — Software Architect / Kubstronaut">
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+   <meta name="twitter:image:alt" content="Paweł Jacek Frąckowiak - Software Architect / Kubstronaut">
   <style>
 /* Hand-written CV styles. Two themes (dark default, light via prefers-color-scheme).
-   Originally ported from site/assets/css/input.css:60-193. No Tailwind, no theme toggle. */
+   Redesigned: improved typography hierarchy, subtle sectioning, refined bullets.
+   System font stack — no external font loading. */
 
 :root {
   --color-bg: #090c10;
+  --color-bg-alt: #0d1117;
   --color-text: #e6edf3;
   --color-text-dim: #9198a1;
+  --color-text-dimmer: #6e7781;
   --color-accent: #58a6ff;
-  --color-accent-soft: rgba(88, 166, 255, 0.12);
+  --color-accent-soft: rgba(88, 166, 255, 0.15);
   --color-border: #21262d;
-  --font-sans: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --color-border-strong: #30363d;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --max-width: 880px;
 }
 
 @media (prefers-color-scheme: light) {
   :root {
     --color-bg: #ffffff;
+    --color-bg-alt: #f6f8fa;
     --color-text: #1f2328;
     --color-text-dim: #57606a;
+    --color-text-dimmer: #768090;
     --color-border: #d0d7de;
-    --color-accent: #0969da;          /* GitHub light-blue; ~5.4:1 on white (AA) */
-    --color-accent-soft: rgba(9, 105, 218, 0.10);
+    --color-border-strong: #b6c8db;
+    --color-accent: #0969da;
+    --color-accent-soft: rgba(9, 105, 218, 0.12);
   }
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 100%;
 }
 
 ::selection {
   background: var(--color-accent-soft);
   color: var(--color-text);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.65;
+  font-size: 0.875rem;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .skip-link {
@@ -74,34 +97,24 @@
   background: var(--color-accent);
   color: #fff;
   z-index: 100;
+  border-radius: 3px 3px 0 0;
+  font-size: 0.8125rem;
+  font-weight: 500;
 }
 
 .skip-link:focus {
   left: 0;
 }
 
-html, body {
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: var(--font-sans);
-  background: var(--color-bg);
-  color: var(--color-text);
-  line-height: 1.6;
-  font-size: 0.875rem;
-  -webkit-font-smoothing: antialiased;
-}
-
 a {
   color: var(--color-accent);
   text-decoration: none;
-  transition: color 0.15s;
+  transition: color 0.15s ease;
 }
 
 a:hover {
-  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
 }
 
 a:visited {
@@ -111,68 +124,79 @@ a:visited {
 :focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
+  border-radius: 2px;
 }
 
 main.content {
-  max-width: 780px;
+  max-width: var(--max-width);
   margin: 0 auto;
-  padding: 3.5rem 1.5rem;
+  padding: 4rem 1.5rem;
 }
 
-/* ── Document title (h1 in MD) ── */
+/* ── Document title ── */
 .content h1 {
-  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
   font-weight: 700;
   color: var(--color-text);
-  line-height: 1.2;
+  line-height: 1.1;
   letter-spacing: -0.01em;
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.25rem;
 }
 
 /* Contact line right after the title */
 .content > h1 + p {
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--color-text-dim);
-  letter-spacing: 0.02em;
-  margin: 0 0 0.5rem;
+  letter-spacing: 0.01em;
+  margin: 0 0 2.25rem;
+  line-height: 1.6;
 }
 
-/* ── Section headings (h2 in MD: "Experience", "Education", ...) ── */
+.content > h1 + p a {
+  text-underline-offset: 2px;
+}
+
+/* ── Section headings (Experience, Education, etc.) ── */
 .content h2 {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   font-variant: small-caps;
-  letter-spacing: 1px;
-  color: var(--color-text);
-  border-bottom: 1px solid var(--color-border);
-  padding-bottom: 6px;
-  margin: 2.625rem 0 1.125rem;
+  letter-spacing: 0.06em;
+  color: var(--color-text-dim);
+  border-left: 3px solid var(--color-accent);
+  padding-left: 0.75rem;
+  margin: 3rem 0 1.25rem;
   line-height: 1.3;
 }
 
 .content h2:first-of-type {
-  margin-top: 4px;
+  margin-top: 0;
 }
 
-/* ── Entry titles (job + company/date) ── */
+/* ── Job titles ── */
 .content h3 {
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: var(--color-text);
-  margin: 1.5rem 0 0;
   line-height: 1.3;
+  margin: 2rem 0 0.25rem;
 }
 
-.content h3 + p {
-  margin-top: 1px;
+.content h3 em {
+  font-style: normal;
+  font-weight: 500;
+  color: var(--color-text-dim);
+  font-size: 0.85rem;
 }
 
+/* Company / date line */
 .content > p em {
   display: block;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--color-text-dim);
   font-style: normal;
-  margin-top: 1px;
+  font-weight: 500;
+  margin-top: 0.125rem;
 }
 
 .content p strong {
@@ -182,37 +206,43 @@ main.content {
 
 /* ── Description paragraphs ── */
 .content p {
-  margin: 4px 0;
+  margin: 0.375rem 0;
   color: var(--color-text-dim);
-  font-size: 0.8125rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.content p:last-of-type {
+  margin-bottom: 0.5rem;
 }
 
 /* ── Bullet lists ── */
 .content ul {
-  margin: 8px 0;
+  margin: 0.625rem 0 0.75rem;
   padding-left: 0;
   list-style: none;
 }
 
 .content li {
   position: relative;
-  padding-left: 16px;
-  margin-bottom: 3px;
-  font-size: 0.8125rem;
+  padding-left: 18px;
+  margin-bottom: 0.4rem;
+  font-size: 0.85rem;
   color: var(--color-text-dim);
   list-style-type: none;
+  line-height: 1.55;
 }
 
 .content li::before {
   content: "";
   position: absolute;
   left: 0;
-  top: 8px;
-  width: 4px;
-  height: 4px;
+  top: 0.3125rem;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: var(--color-accent);
-  opacity: 0.35;
+  opacity: 0.45;
 }
 
 .content li strong {
@@ -220,47 +250,96 @@ main.content {
   color: var(--color-text);
 }
 
+.content li p {
+  margin: 0;
+  color: var(--color-text-dim);
+}
+
+/* Certifications & awards use <p> inside <li> — keep tight spacing */
+.content li > p {
+  margin-top: 0.25rem;
+}
+
+/* ── Languages line ── */
+.content li strong + span {
+  font-weight: 400;
+  color: var(--color-text-dim);
+}
+
+/* ── Last updated ── */
+.content > p:last-child {
+  font-size: 0.75rem;
+  color: var(--color-text-dimmer);
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+}
+
+/* ── Print styles ── */
 @media print {
-  @page { size: A4; margin: 14mm; }
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+
   body {
     background: #fff !important;
     color: #111 !important;
     font-size: 10pt;
   }
+
   main.content {
     padding: 0 !important;
     max-width: none !important;
   }
+
   a {
     color: #111 !important;
+    text-decoration: none;
   }
+
   .content code {
     background: #f0f4ff !important;
     color: #0969da !important;
   }
+
   .content h2 {
     color: #111 !important;
-    border-bottom-color: #999 !important;
+    border-left-color: #999 !important;
     break-after: avoid;
   }
-  .content li, .content > p:has(strong) {
+
+  .content li,
+  .content > p:has(strong) {
     break-inside: avoid;
   }
-  /* print-color-adjust: exact is intentionally scoped to .content li::before only — the rest of the print output is white-on-black by design. */
+
+  /* Print-color-adjust is scoped to bullets only — the rest of the print
+     output is black-on-white by default design. */
   .content li::before {
     background: #0969da !important;
-    opacity: 0.25;
+    opacity: 0.3;
     -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
   }
-  /* Defensive URL exposure for print. Dead at the moment (no http links in current cv.md body) but ready for future external links. */
+
+  /* Defensive URL exposure for print. */
   a[href^="http"]:not([href*="linkedin.com"]):not([href*="github.com"]):not([href^="mailto:"])::after {
     content: " (" attr(href) ")";
     font-size: 0.85em;
     color: #555;
   }
+
+  /* Drop the last-updated footer border on print */
+  .content > p:last-child {
+    border-top: none !important;
+    padding-top: 0 !important;
+    text-align: right;
+  }
 }
 
+/* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     transition: none !important;
@@ -268,24 +347,45 @@ main.content {
   }
 }
 
+/* ── Responsive ── */
 @media (max-width: 768px) {
   main.content {
-    padding: 2rem 1rem;
+    padding: 3rem 1rem;
   }
+
+  .content h1 {
+    font-size: 1.5rem;
+  }
+
+  .content > h1 + p {
+    font-size: 0.75rem;
+    font-size: 0.75rem;
+  }
+
   .content h2 {
-    margin: 1.75rem 0 0.75rem;
+    margin: 2.25rem 0 1rem;
+  }
+
+  .content h3 {
+    margin-top: 1.5rem;
   }
 }
 
 @media (max-width: 480px) {
   main.content {
-    padding: 1.5rem 0.75rem;
+    padding: 2rem 0.75rem;
   }
+
   .content h1 {
-    font-size: 1.4rem;
+    font-size: 1.375rem;
   }
+
   .content > h1 + p {
     font-size: 0.7rem;
+  }
+
+  body {
+    font-size: 0.8125rem;
   }
 }
 
@@ -328,12 +428,12 @@ main.content {
 <p>Hands-on Software Architect and Kubstronaut with a strong foundation in Quality Assurance and Automation. I combine deep infrastructure expertise (Kubernetes, Go, Security) with practical application development (Python, GenAI). I focus on moving AI projects from “proof of concept” to stable, scalable production systems. My goal is to engineer reliable platforms where code quality and operational security are priorities, not afterthoughts.</p>
 <h2 id="experience">Experience</h2>
 <h3 id="architect-go-python-genai-lead-developer-managing-solution-architect">Architect (Go, Python, GenAI) / Lead Developer <em>(Managing Solution Architect)</em></h3>
-<p><em>Capgemini Polska Sp. z o.o., Wrocław, Mar 2022 – Present</em></p>
+<p><em>Capgemini Polska Sp. z o.o., Wrocław, Mar 2022 - Present</em></p>
 <ul>
 <li><strong>SmartDesk (Document Intelligence):</strong> Architected the on-premise infrastructure for an AI-driven data extraction platform processing complex documents (leases, resumes, certificates). Designed a hardware-aware pipeline using Docling (FastAPI) that toggles between CPU-bound <strong>PaddleOCR</strong> and GPU-bound <strong>dots.mocr</strong> based on hardware availability. Configured the BiFrost LLM gateway to dynamically route standard LLM requests to <strong>Gemma 4</strong> (served via vLLM) and specialized OCR workloads to the OCR model. Bridged the AI backend with a React/NestJS frontend, ensuring seamless operation across AWS cloud and secure bare-metal environments.</li>
 <li><strong>Multi-Agent Architecture Consulting (Azure):</strong> Acted as a Consulting Architect advising enterprise clients on the adoption of advanced AI patterns using the Microsoft Agentic Framework. Consulted on strategic implementation of an “Agent Mesh” architecture, demonstrating how a central orchestrator/planner agent can dynamically route tasks to specialized containerized agents via skill registration. Guided client integration strategy for leveraging Model Context Protocol (MCP) to autonomously execute complex workflows within <strong>SAP</strong> and <strong>ServiceNow (SNow)</strong> environments.</li>
 <li><strong>GenAI Platform Architecture:</strong> Architected a RAG-as-a-Service platform enabling employees to upload documents and interact conversationally. Designed end-to-end document pipeline using Unstructured AI (chunking), Azure AI Search, SharePoint, S3 buckets, DynamoDB, Lambda, Step Functions, SQS/SNS, EC2 instances, and API Gateway for secure self-service document processing.</li>
-<li><strong>Kagent Research (DevOps AI):</strong> Conducted in-depth research and proof-of-concept development for Kagent – an AI agent framework specifically designed for DevOps workflows. Evaluated agentic patterns for automating infrastructure provisioning, CI/CD pipeline optimization, and Kubernetes cluster management using advanced LLM orchestration techniques.</li>
+<li><strong>Kagent Research (DevOps AI):</strong> Conducted in-depth research and proof-of-concept development for Kagent, an AI agent framework specifically designed for DevOps workflows. Evaluated agentic patterns for automating infrastructure provisioning, CI/CD pipeline optimization, and Kubernetes cluster management using advanced LLM orchestration techniques.</li>
 <li><strong>High-Performance Backend (Go):</strong> Tech Lead for the <em>Digital Euro</em> integration layer. Engineered a secure, low-latency system integrating HSM, caching strategies, DESP Interface, and Kubernetes to handle financial transaction standards.</li>
 <li><strong>GenAI Strategy &amp; Consulting:</strong> Acting Architect in the GenAI Expert Center, advising projects on “Build vs. Buy” strategies. Evaluated when to deploy custom private models (vLLM, Ollama) versus leveraging existing internal company assets or cloud APIs, balancing security, cost, and compliance.</li>
 <li><strong>Enterprise Security Integration:</strong> Contributed to development of a Go-based Key Management System (KMS) for SAP BTP. Implemented critical gRPC/OAuth2 components to enable secure cryptographic operations in a cloud-native environment.</li>
@@ -341,7 +441,7 @@ main.content {
 <li><strong>Specialized Domain Applications:</strong> Developed critical tools for clients, including a nuclear waste calculation engine (Python/Pandas) and productivity add-ins (TypeScript/Node.js) for the MS Office ecosystem.</li>
 </ul>
 <h3 id="architect-go-rpa-lead-developer-senior-app.-consultant">Architect (Go, RPA) / Lead Developer <em>(Senior App. Consultant)</em></h3>
-<p><em>Capgemini Polska Sp. z o.o., Wrocław, Jan 2020 – Mar 2022</em></p>
+<p><em>Capgemini Polska Sp. z o.o., Wrocław, Jan 2020 - Mar 2022</em></p>
 <ul>
 <li><strong>Go Ecosystem Pioneer:</strong> Spearheaded the first commercial Golang initiative in the Wrocław branch. Architected the core development ecosystem from ground zero, delivering critical tooling (OpenAPI transpilers) and a containerized test framework (Resty, Godog), effectively proving Go’s viability for enterprise delivery.</li>
 <li><strong>Intelligent Automation &amp; DevOps:</strong> Tech Lead for the RPA Center of Excellence. Pioneered the use of <strong>Jenkins as a Robot Orchestrator</strong> and integrated UiPath with AI systems for a “Level 1.5 Support” platform, bridging classic RPA with CI/CD practices.</li>
@@ -350,33 +450,33 @@ main.content {
 <li><strong>Technical Recruitment &amp; Mentoring:</strong> Acted as the primary technical recruiter and mentor for a 12-member team, defining coding standards and training the first wave of developers in the new tech stack.</li>
 </ul>
 <h3 id="lead-automation-engineer-senior-test-consultant">Lead Automation Engineer <em>(Senior Test Consultant)</em></h3>
-<p><em>Capgemini Polska Sp. z o.o., Wrocław, Jan 2019 – Jun 2020</em></p>
+<p><em>Capgemini Polska Sp. z o.o., Wrocław, Jan 2019 - Jun 2020</em></p>
 <ul>
 <li><strong>Framework Development (Selenium):</strong> Designed and maintained a custom Java-based Selenium automation framework (JUnit 5), establishing reusable test patterns and stable execution pipelines.</li>
 <li><strong>Automation Strategy:</strong> Defined and executed the test automation approach across teams, improving test coverage and reliability of regression runs.</li>
 <li><strong>Performance Engineering:</strong> Conducted performance analysis and load testing to identify system bottlenecks and provide actionable recommendations.</li>
 </ul>
 <h3 id="technical-trainer-python-selenium">Technical Trainer (Python &amp; Selenium)</h3>
-<p><em>Testuj.pl, Wrocław, Dec 2018 – Apr 2019</em></p>
+<p><em>Testuj.pl, Wrocław, Dec 2018 - Apr 2019</em></p>
 <ul>
 <li><strong>Expert Training Lead:</strong> Conducted specialized weekend workshops and corporate training sessions on Test Automation using Python and Selenium WebDriver.</li>
 <li><strong>Curriculum Development:</strong> Designed practical coding exercises and training materials to upskill professional QA engineers.</li>
 </ul>
 <h3 id="lead-automation-engineer-embedded-web-senior-test-engineer">Lead Automation Engineer (Embedded Web) <em>(Senior Test Engineer)</em></h3>
-<p><em>Silicon &amp; Software Systems Polska Sp. z o.o., Wrocław, Dec 2015 – Dec 2018</em></p>
+<p><em>Silicon &amp; Software Systems Polska Sp. z o.o., Wrocław, Dec 2015 - Dec 2018</em></p>
 <ul>
 <li><strong>Scale &amp; Reliability:</strong> Managed a daily execution pipeline of ~4,000 tests, combining high-level GUI validation with low-level embedded verification.</li>
 <li><strong>Hybrid Framework Architecture:</strong> Architected a dual-layer automation ecosystem: a Java/Selenium framework for web interfaces and Python-based scripting for direct embedded device testing and hardware interaction.</li>
 <li><strong>Technical Leadership:</strong> Led the comprehensive testing strategy for complex embedded systems, bridging the gap between hardware and software QA.</li>
 </ul>
 <h3 id="software-test-engineer">Software Test Engineer</h3>
-<p><em>Fara Polska Sp. z o.o., Warsaw, Nov 2013 – Nov 2015</em></p>
+<p><em>Fara Polska Sp. z o.o., Warsaw, Nov 2013 - Nov 2015</em></p>
 <ul>
 <li><strong>Test Coordination &amp; Reporting:</strong> Coordinated testing of the Central System (JBoss application) for a public transport ticketing solution. Managed test cases in Spira/Jira and documented specs/reports in Confluence.</li>
 <li><strong>Test Automation:</strong> Built automation for web and API testing using Python, Java, JUnit, Selenium, and SoapUI.</li>
 </ul>
 <h3 id="rd-specialist-test-engineer">R&amp;D Specialist / Test Engineer</h3>
-<p><em>Telekomunikacja Polska S.A. (Orange Labs), Jun 2009 – Oct 2013</em></p>
+<p><em>Telekomunikacja Polska S.A. (Orange Labs), Jun 2009 - Oct 2013</em></p>
 <ul>
 <li><strong>Lab Automation &amp; R&amp;D:</strong> Automated hardware/software testing workflows for telecommunication systems, reducing cycle time by ~30%. Managed laboratory infrastructure and executed complex test protocols.</li>
 </ul>
