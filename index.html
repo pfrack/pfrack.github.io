@@ -303,7 +303,7 @@ main.content::before {
   letter-spacing: 0.18em;
   color: var(--color-text-dim);
   line-height: 1;
-  margin: 3.5rem 0 1.25rem;
+  margin: 4.5rem 0 1.5rem;
   position: relative;
   padding: 0 0 0.75rem;
   text-wrap: balance;
@@ -349,6 +349,22 @@ main.content::before {
   margin: 2rem 0 0.25rem;
   text-wrap: balance;
   letter-spacing: -0.005em;
+}
+
+/* Scroll-reveal: gentle one-shot fade-up for h3s. JS in site.html adds
+   the .reveal class on load, then .is-visible when each enters viewport.
+   Initial opacity is set in CSS so no JS = no broken state. */
+.content > h3.reveal {
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 500ms var(--ease-spring),
+    transform 500ms var(--ease-spring);
+}
+
+.content > h3.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .content h3 em {
@@ -623,6 +639,13 @@ main.content::before {
     display: none !important;
   }
 
+  /* Print: force h3 reveal state — never print blank titles. */
+  .content > h3.reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
   .content h2 {
     color: #111 !important;
     break-after: avoid;
@@ -895,5 +918,25 @@ main.content::before {
 <p>Last updated: September 2026</p>
 </main>
 <script>document.querySelectorAll('.content ul').forEach(u=>u.setAttribute('role','list'))</script>
+<script>
+(function(){
+  // Gentle one-shot fade-up for h3 job titles. Skipped for users with
+  // reduced-motion preference or browsers without IntersectionObserver.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!('IntersectionObserver' in window)) return;
+  var els = document.querySelectorAll('.content > h3');
+  if (!els.length) return;
+  els.forEach(function(el){ el.classList.add('reveal'); });
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  els.forEach(function(el){ io.observe(el); });
+})();
+</script>
 </body>
 </html>
